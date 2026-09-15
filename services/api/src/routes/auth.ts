@@ -4,7 +4,11 @@ import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
 
 const router = Router();
-const JWT_SECRET = process.env.JWT_SECRET || 'pragya_super_secret_jwt_key_2026';
+const JWT_SECRET = process.env.JWT_SECRET;
+
+if (!JWT_SECRET) {
+  throw new Error('Missing JWT_SECRET environment variable. Set it in your local .env file before starting the API.');
+}
 
 // 1. Student Sign Up Route (Status: PENDING_APPROVAL)
 router.post('/signup-student', async (req: Request, res: Response) => {

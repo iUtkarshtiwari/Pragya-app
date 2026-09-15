@@ -1,6 +1,10 @@
 import mongoose from 'mongoose';
 
-const mongoUri = process.env.MONGODB_URI || 'mongodb+srv://utkarshtiwari102005_db_user:vLOdeBNJZK1DZKXn@pragya.xgiiykv.mongodb.net/pragya_db?retryWrites=true&w=majority&appName=pragya';
+const mongoUri = process.env.MONGODB_URI;
+
+if (!mongoUri) {
+  throw new Error('Missing MONGODB_URI environment variable. Set it in your local .env file before running the seeding script.');
+}
 
 async function runDirectSeeding() {
   console.log(`🔌 Running Seeding Script against MongoDB Atlas...`);

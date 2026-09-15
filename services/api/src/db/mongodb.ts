@@ -1,7 +1,13 @@
 import mongoose from 'mongoose';
 
 export async function connectMongoDB(): Promise<boolean> {
-  const mongoUri = process.env.MONGODB_URI || 'mongodb+srv://utkarshtiwari102005_db_user:vLOdeBNJZK1DZKXn@pragya.xgiiykv.mongodb.net/pragya_db?retryWrites=true&w=majority&appName=pragya';
+  const mongoUri = process.env.MONGODB_URI;
+
+  if (!mongoUri) {
+    console.error('Missing MONGODB_URI environment variable. Set it in your local .env file before starting the API.');
+    return false;
+  }
+
   try {
     console.log(`🔌 Connecting to MongoDB Atlas cluster...`);
     await mongoose.connect(mongoUri, { serverSelectionTimeoutMS: 5000 });
