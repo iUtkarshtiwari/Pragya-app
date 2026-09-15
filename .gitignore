@@ -1,0 +1,42 @@
+# Environment variables / secrets
+.env
+.env.*
+!.env.example
+
+# Private keys / certificates / signing material
+*.pem
+*.key
+*.crt
+*.csr
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.der
+
+# Mobile / app signing secrets
+**/google-services.json
+**/Firebase/**
+**/key.properties
+**/secrets/**
+
+# OS / editor files
+.DS_Store
+Thumbs.db
+.vscode/
+
+# Dependency folders / build output
+node_modules/
+dist/
+build/
+out/
+coverage/
+
+# Logs
+*.log
+
+# Optional local env files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local

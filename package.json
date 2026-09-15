@@ -1,0 +1,21 @@
+{
+  "name": "pragya-platform",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Production-grade Task Management and Proctored Coding Contest Platform",
+  "workspaces": [
+    "apps/*",
+    "services/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:api": "npm --prefix services/api run dev",
+    "dev:admin": "npm --prefix apps/admin-web run dev",
+    "dev:exam": "npm --prefix apps/exam-web run dev",
+    "dev:worker": "npm --prefix services/worker run dev",
+    "test": "npm --prefix services/api test"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}
