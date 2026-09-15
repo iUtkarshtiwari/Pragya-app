@@ -65,9 +65,21 @@ const ContestSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
-export const UserModel = mongoose.models.User || mongoose.model('User', UserSchema);
-export const TaskModel = mongoose.models.Task || mongoose.model('Task', TaskSchema);
-export const ContestModel = mongoose.models.Contest || mongoose.model('Contest', ContestSchema);
+const ExamAttemptSchema = new mongoose.Schema({
+  attemptId: { type: String, required: true, unique: true },
+  studentEmail: { type: String, required: true },
+  taskId: { type: String },
+  status: { type: String, enum: ['IN_PROGRESS', 'COMPLETED', 'DISQUALIFIED'], default: 'IN_PROGRESS' },
+  startedAt: { type: Date, default: Date.now },
+  finishedAt: { type: Date },
+  score: { type: Number, default: 0 },
+  createdAt: { type: Date, default: Date.now }
+});
+
+export const UserModel: mongoose.Model<any> = (mongoose.models.User as mongoose.Model<any>) || mongoose.model('User', UserSchema);
+export const TaskModel: mongoose.Model<any> = (mongoose.models.Task as mongoose.Model<any>) || mongoose.model('Task', TaskSchema);
+export const ContestModel: mongoose.Model<any> = (mongoose.models.Contest as mongoose.Model<any>) || mongoose.model('Contest', ContestSchema);
+export const ExamAttemptModel: mongoose.Model<any> = (mongoose.models.ExamAttempt as mongoose.Model<any>) || mongoose.model('ExamAttempt', ExamAttemptSchema);
 
 async function seedRequiredUsersAndTasks() {
   try {

@@ -3,12 +3,18 @@
   "version": "1.0.0",
   "private": true,
   "description": "Production-grade Task Management and Proctored Coding Contest Platform",
+  "engines": {
+    "node": "20.x",
+    "npm": "10.x"
+  },
   "workspaces": [
     "apps/*",
     "services/*",
     "packages/*"
   ],
   "scripts": {
+    "build": "npm --prefix services/api run build && npm --prefix apps/admin-web run build && npm --prefix apps/exam-web run build",
+    "start": "npm --prefix services/api run start",
     "dev:api": "npm --prefix services/api run dev",
     "dev:admin": "npm --prefix apps/admin-web run dev",
     "dev:exam": "npm --prefix apps/exam-web run dev",
