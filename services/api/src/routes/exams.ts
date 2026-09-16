@@ -104,7 +104,7 @@ router.post('/generate-user-test-link', async (req: Request, res: Response) => {
 
   // Signed link structure: TEST_[TEST_ID]_[USER_CODE]
   const token = `TEST_${targetTestId}_${userCode}`;
-  const examOrigin = process.env.EXAM_APP_URL || 'http://localhost:3002';
+  const examOrigin = process.env.EXAM_APP_URL || 'https://pragya-exam.netlify.app';
   const assignmentUrl = `${examOrigin}/exam?token=${token}&user=${encodeURIComponent(targetEmail)}&testId=${targetTestId}&userCode=${encodeURIComponent(userCode)}`;
 
   return res.json({
