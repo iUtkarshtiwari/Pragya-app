@@ -1,17 +1,22 @@
-# Root Netlify Configuration for Pragya Monorepo
+# Root Netlify config for the Pragya monorepo.
 #
-# IMPORTANT: Because this is a monorepo with multiple web applications (apps/admin-web & apps/exam-web),
-# you must set the "Base directory" in Netlify Site Settings for each site:
+# IMPORTANT:
+# Each Netlify site must be configured separately in the Netlify UI.
+# Do not use the repo root as the deploy target when multiple apps exist.
 #
-# FOR PRAGYA ADMIN (https://app.netlify.com/projects/pragya-admin/overview):
+# Admin site:
 #   Base directory: apps/admin-web
 #   Build command: npm run build
 #   Publish directory: dist
 #
-# FOR PRAGYA EXAM (https://app.netlify.com/projects/pragya-exam/configuration/advanced):
+# Exam site:
 #   Base directory: apps/exam-web
 #   Build command: npm run build
 #   Publish directory: dist
+#
+# This file intentionally avoids [build] settings so it cannot override the
+# per-site configuration in Netlify. The app-specific netlify.toml files under
+# apps/admin-web and apps/exam-web are the ones that should define the build.
 
 [build.environment]
   NODE_VERSION = "20"
