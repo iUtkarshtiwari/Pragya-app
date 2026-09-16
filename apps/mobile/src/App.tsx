@@ -4,6 +4,7 @@ import { DeviceSecurityService } from './services/DeviceSecurityService';
 import { OnboardingScreen } from './screens/OnboardingScreen';
 import { DashboardScreen } from './screens/DashboardScreen';
 import { TaskDetailScreen } from './screens/TaskDetailScreen';
+import { EXAM_APP_URL } from './config';
 
 export default function App() {
   const [isRegistered, setIsRegistered] = useState<boolean | null>(null);
@@ -35,7 +36,7 @@ export default function App() {
       ) : (
         <DashboardScreen 
           onOpenExamInvitation={() => {
-            window.open('http://localhost:3002/exam?token=EXAM_TOKEN_ALEX_CHEN_2026', '_blank');
+            window.open(`${EXAM_APP_URL}/exam?token=EXAM_TOKEN_ALEX_CHEN_2026`, '_blank');
           }}
           onSelectTask={(task) => setSelectedTask(task)}
           onLogout={handleLogout}

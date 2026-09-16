@@ -16,6 +16,7 @@ import {
   Camera,
   FileCode
 } from 'lucide-react';
+import { API_BASE_URL, WS_BASE_URL, EXAM_APP_URL, apiUrl, wsUrl } from './config';
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -80,7 +81,7 @@ export default function App() {
       candidateName: 'Pragya Student',
       candidateEmail: 'pragyat841@gmail.com',
       testId: 'PROCTORED_TEST_841',
-      assignmentUrl: 'http://localhost:3002/exam?token=TEST_PRAGYAT841_PROCTORED_TEST_841&user=pragyat841%40gmail.com&testId=PROCTORED_TEST_841',
+      assignmentUrl: `${EXAM_APP_URL}/exam?token=TEST_PRAGYAT841_PROCTORED_TEST_841&user=pragyat841%40gmail.com&testId=PROCTORED_TEST_841`,
       status: 'IN_PROGRESS',
       startedAt: new Date().toLocaleTimeString(),
       violationCount: 1,
@@ -138,7 +139,7 @@ export default function App() {
 
   const fetchDailyThought = async () => {
     try {
-      const res = await fetch('http://localhost:3001/api/v1/dashboard/thought');
+      const res = await fetch(apiUrl('/api/v1/dashboard/thought'));
       const json = await res.json();
       if (json.success && json.data?.thought) {
         setDailyThoughtInput(json.data.thought);
@@ -149,7 +150,7 @@ export default function App() {
   const handleUpdateDailyThought = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await fetch('http://localhost:3001/api/v1/dashboard/thought', {
+      const res = await fetch(apiUrl('/api/v1/dashboard/thought'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ thought: dailyThoughtInput, author: 'Super Admin Utkarsh Tiwari' })
@@ -164,7 +165,7 @@ export default function App() {
 
   useEffect(() => {
     try {
-      const socket = new WebSocket('ws://localhost:3001/ws/proctoring');
+      const socket = new WebSocket(wsUrl('/ws/proctoring'));
       setWs(socket);
     } catch (e) {}
   }, []);
@@ -181,15 +182,15 @@ export default function App() {
 
   const fetchDashboardData = async () => {
     try {
-      const tasksRes = await fetch('http://localhost:3001/api/v1/tasks');
+      const tasksRes = await fetch(apiUrl('/api/v1/tasks'));
       const tasksJson = await tasksRes.json();
       if (tasksJson.success && tasksJson.data && tasksJson.data.length > 0) setTaskList(tasksJson.data);
 
-      const studentsRes = await fetch('http://localhost:3001/api/v1/users/students');
+      const studentsRes = await fetch(apiUrl('/api/v1/users/students'));
       const studentsJson = await studentsRes.json();
       if (studentsJson.success && studentsJson.data && studentsJson.data.length > 0) setStudentsList(studentsJson.data);
 
-      const contestsRes = await fetch('http://localhost:3001/api/v1/contests');
+      const contestsRes = await fetch(apiUrl('/api/v1/contests'));
       const contestsJson = await contestsRes.json();
       if (contestsJson.success && contestsJson.data && contestsJson.data.length > 0) setContestList(contestsJson.data);
     } catch (err) {}
@@ -201,7 +202,7 @@ export default function App() {
 
   const handleApproveStudent = async (studentId: string) => {
     try {
-      await fetch(`http://localhost:3001/api/v1/users/${studentId}/approve`, { method: 'PATCH' });
+      await fetch(apiUrl(`/api/v1/users/${studentId}/approve`), { method: 'PATCH' });
     } catch (e) {}
     setStudentsList(prev => prev.map(s => s.id === studentId || s._id === studentId ? { ...s, status: 'APPROVED' } : s));
   };
@@ -224,7 +225,7 @@ export default function App() {
     setNewTaskTitle('');
 
     try {
-      await fetch('http://localhost:3001/api/v1/tasks', {
+      await fetch(apiUrl('/api/v1/tasks'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -259,7 +260,7 @@ export default function App() {
     setCodingDesc('');
 
     try {
-      await fetch('http://localhost:3001/api/v1/contests/create-assignment', {
+      await fetch(apiUrl('/api/v1/contests/create-assignment'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newAssignment)
@@ -278,7 +279,7 @@ export default function App() {
 
   const handleGenerateInvitation = () => {
     const token = `TEST_PRAGYAT841_PROCTORED_TEST_${Math.random().toString().slice(-4)}`;
-    const url = `http://localhost:3002/exam?token=${token}&user=pragyat841%40gmail.com&testId=PROCTORED_TEST_${Math.random().toString().slice(-4)}`;
+    const url = `${EXAM_APP_URL}/exam?token=${token}&user=pragyat841%40gmail.com&testId=PROCTORED_TEST_${Math.random().toString().slice(-4)}`;
     setGeneratedInvitationUrl(url);
   };
 

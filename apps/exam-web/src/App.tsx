@@ -12,6 +12,7 @@ import {
   Volume2,
   WifiOff
 } from 'lucide-react';
+import { apiUrl, wsUrl } from './config';
 
 export default function App() {
   const [phase, setPhase] = useState<'verification' | 'exam' | 'submitted' | 'prerequisite_locked' | 'disqualified'>('verification');
@@ -57,7 +58,7 @@ export default function App() {
       setCandidateEmail(userParam);
       setTestId(testIdParam);
 
-      const res = await fetch('http://localhost:3001/api/v1/exams/verify-invitation', {
+      const res = await fetch(apiUrl('/api/v1/exams/verify-invitation'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ invitationToken: token })
@@ -82,7 +83,7 @@ export default function App() {
   // 3. WebSockets Listener for Super Admin Live Voice/Text Interruption
   useEffect(() => {
     try {
-      const ws = new WebSocket('ws://localhost:3001/ws/proctoring');
+      const ws = new WebSocket(wsUrl('/ws/proctoring'));
       ws.onmessage = (event) => {
         try {
           const msg = JSON.parse(event.data);
@@ -116,7 +117,7 @@ export default function App() {
       setWarningMessage(`⚠️ Security Violation Warning ${nextCount}/3: ${reason}`);
 
       // Post violation event to backend
-      fetch(`http://localhost:3001/api/v1/exams/atm_${testId}/proctoring-event`, {
+      fetch(apiUrl(`/api/v1/exams/atm_${testId}/proctoring-event`), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ eventType: 'TAB_SWITCH', metadata: { reason, violationIndex: nextCount } })

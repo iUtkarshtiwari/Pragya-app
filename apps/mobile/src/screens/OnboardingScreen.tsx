@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
 import { DeviceSecurityService } from '../services/DeviceSecurityService';
+import { apiUrl } from '../config';
 
 export function OnboardingScreen({ onRegistrationSuccess }: { onRegistrationSuccess: () => void }) {
   const [tab, setTab] = useState<'login' | 'signup'>('login');
@@ -16,7 +17,7 @@ export function OnboardingScreen({ onRegistrationSuccess }: { onRegistrationSucc
     setErrorMsg(null);
     setMessage(null);
     try {
-      const res = await fetch('http://localhost:3001/api/v1/auth/signup-student', {
+      const res = await fetch(apiUrl('/api/v1/auth/signup-student'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: emailInput, password: passwordInput, fullName: nameInput || 'New Student' })
@@ -41,7 +42,7 @@ export function OnboardingScreen({ onRegistrationSuccess }: { onRegistrationSucc
     setErrorMsg(null);
     setMessage(null);
     try {
-      const res = await fetch('http://localhost:3001/api/v1/auth/register-device', {
+      const res = await fetch(apiUrl('/api/v1/auth/register-device'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

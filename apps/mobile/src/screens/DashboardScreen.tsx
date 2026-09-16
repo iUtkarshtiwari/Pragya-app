@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 
 import { DeviceSecurityService } from '../services/DeviceSecurityService';
+import { API_BASE_URL, EXAM_APP_URL, apiUrl } from '../config';
 
 export function DashboardScreen({ onOpenExamInvitation, onSelectTask, onLogout }: { onOpenExamInvitation: () => void; onSelectTask: (task: any) => void; onLogout?: () => void }) {
   const [studentEmail, setStudentEmail] = useState<string>('pragyat841@gmail.com');
@@ -54,7 +55,7 @@ export function DashboardScreen({ onOpenExamInvitation, onSelectTask, onLogout }
 
   const fetchDailyThought = async () => {
     try {
-      const res = await fetch('http://localhost:3001/api/v1/dashboard/thought');
+      const res = await fetch(apiUrl('/api/v1/dashboard/thought'));
       const json = await res.json();
       if (json.success && json.data?.thought) {
         setDailyThought({
@@ -67,7 +68,7 @@ export function DashboardScreen({ onOpenExamInvitation, onSelectTask, onLogout }
 
   const registerFcmToken = async (email: string) => {
     try {
-      await fetch('http://localhost:3001/api/v1/notifications/register-fcm-token', {
+      await fetch(apiUrl('/api/v1/notifications/register-fcm-token'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId: email, fcmToken: `fcm_token_device_${Date.now()}`, appState: 'FOREGROUND' })
@@ -78,7 +79,7 @@ export function DashboardScreen({ onOpenExamInvitation, onSelectTask, onLogout }
 
   const fetchNotifications = async (email: string) => {
     try {
-      const res = await fetch(`http://localhost:3001/api/v1/notifications?userId=${encodeURIComponent(email)}`);
+      const res = await fetch(apiUrl(`/api/v1/notifications?userId=${encodeURIComponent(email)}`));
       const json = await res.json();
       if (json.success && json.data) {
         setNotifications(json.data.notifications || []);
@@ -91,14 +92,14 @@ export function DashboardScreen({ onOpenExamInvitation, onSelectTask, onLogout }
     setNotifications(prev => prev.map(n => n.id === id ? { ...n, read: true } : n));
     setUnreadCount(prev => Math.max(0, prev - 1));
     try {
-      await fetch(`http://localhost:3001/api/v1/notifications/${id}/read`, { method: 'PATCH' });
+      await fetch(apiUrl(`/api/v1/notifications/${id}/read`), { method: 'PATCH' });
     } catch (e) {}
   };
 
   // Fetch student's tasks from MongoDB API
   const fetchTasks = async (email: string) => {
     try {
-      const res = await fetch(`http://localhost:3001/api/v1/tasks?userId=${encodeURIComponent(email)}`);
+      const res = await fetch(apiUrl(`/api/v1/tasks?userId=${encodeURIComponent(email)}`));
       const json = await res.json();
       if (json.success && json.data) {
         setTasks(json.data);
@@ -120,7 +121,7 @@ export function DashboardScreen({ onOpenExamInvitation, onSelectTask, onLogout }
     try {
       const target = tasks.find(t => t.id === taskId || t._id === taskId);
       const nextStatus = target?.status === 'COMPLETED' ? 'IN_PROGRESS' : 'COMPLETED';
-      await fetch(`http://localhost:3001/api/v1/tasks/${taskId}/status`, {
+      await fetch(apiUrl(`/api/v1/tasks/${taskId}/status`), {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: nextStatus, userId: studentEmail })
@@ -142,7 +143,7 @@ export function DashboardScreen({ onOpenExamInvitation, onSelectTask, onLogout }
 
     setLockedReason(null);
     try {
-      const res = await fetch('http://localhost:3001/api/v1/exams/generate-user-test-link', {
+      const res = await fetch(apiUrl('/api/v1/exams/generate-user-test-link'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ studentEmail: studentEmail, testId: 'PROCTORED_TEST_841' })
