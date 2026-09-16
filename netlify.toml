@@ -1,10 +1,17 @@
 # Root Netlify Configuration for Pragya Monorepo
 #
-# Deploying pragya-admin:
-# Set Base directory in Netlify UI to: apps/admin-web
+# IMPORTANT: Because this is a monorepo with multiple web applications (apps/admin-web & apps/exam-web),
+# you must set the "Base directory" in Netlify Site Settings for each site:
 #
-# Deploying pragya-exam:
-# Set Base directory in Netlify UI to: apps/exam-web
+# FOR PRAGYA ADMIN (https://app.netlify.com/projects/pragya-admin/overview):
+#   Base directory: apps/admin-web
+#   Build command: npm run build
+#   Publish directory: dist
+#
+# FOR PRAGYA EXAM (https://app.netlify.com/projects/pragya-exam/configuration/advanced):
+#   Base directory: apps/exam-web
+#   Build command: npm run build
+#   Publish directory: dist
 
 [build.environment]
   NODE_VERSION = "20"
